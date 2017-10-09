@@ -1,0 +1,24 @@
+{
+  "name": "async-flow-routine",
+  "version": "1.0.1",
+  "description": "A common-sense orchestration tool for asynchronous javascript functions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gamekid/async-flow.git"
+  },
+  "keywords": [
+    "async",
+    "async-flow",
+    "callback"
+  ],
+  "author": "Nate Selof <selof86@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gamekid/async-flow/issues"
+  },
+  "homepage": "https://github.com/gamekid/async-flow#readme"
+}
