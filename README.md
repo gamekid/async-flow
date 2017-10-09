@@ -10,28 +10,22 @@ let loginFlow = new Flow([
   // this group is executed first
   {
     // add key : value pairs where the value resolves into a promise
-    user : () => new Promise( (resolve, reject) => {
-      getUserByAuth(auth.email, auth.hash)
-        .then(resolve).catch(reject);
-    })
+    user : () => getUserByAuth(auth.email, auth.hash)
   },
   
   // this group is executed after the previous group is completed
   {
-    // all tasks in group are executed simultaneously
     isLogged : () => new Promise( (resolve, reject) => {
       // use responses from previous tasks
       loginFlow.responses.user.logLogin()
-        .then( () => resolve(true) )
+        .then( () => resolve(true) ) // make sure the promise resolves to something
         .catch(reject);
     }),
-    company : () => new Promise( (resolve, reject) => {
-      getCompanyByUserID(loginFlow.responses.user.ID)
-        .then(resolve).catch(reject);
-    })
+    // all tasks in a group are executed simultaneously
+    company : () => getCompanyByUserID(loginFlow.responses.user.ID)
   }
   
-  // the responses object will be populated with the response under the property name given with the promise
+  // the responses object will be populated with the response under the property name given with the promise. Property names must be unique across all groups.
   
 ]);
 
@@ -42,4 +36,20 @@ loginFlow.exec() // returns a promise
   .catch( err => {
     res.send("Go Away");
   });
+```
+
+Responses can be accessed both in the final resolution and in the flow.responses object.
+
+```
+{
+  user : {
+    ID : 123,
+    name : "Joe"
+  },
+  isLogged : true,
+  company : {
+    ID : 345,
+    name : "Joe's Steakhouse"
+  }
+}
 ```
