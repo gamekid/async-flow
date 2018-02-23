@@ -35,45 +35,6 @@ class Flow {
     return this;
   }
 
-  //////////////////////////////////////////// RESPONSE PROCESSING METHODS ////
-
-  filterResponses(filterResponsesObject) {
-    this.filterResponsesObject = filterResponsesObject;
-    return this;
-  }
-  doFilterResponses() {
-    if (typeof this.filterResponsesObject === 'undefined') {
-      return;
-    }
-
-    let newResponses = {};
-    for (let key in this.responses) {
-      if (this.filterResponsesObject.hasOwnProperty(key))
-        newResponses[key] = typeof this.filterResponsesObject[key] === 'function' ?
-          this.responses[key].filter(this.filterResponsesObject[key]) :
-          this.responses[key];
-    }
-    this.responses = newResponses;
-  }
-  mapResponses(mapResponsesObject) {
-    this.mapResponsesObject = mapResponsesObject;
-    return this;
-  }
-  doMapResponses() {
-    if (typeof this.mapResponsesObject === 'undefined') {
-      return;
-    }
-
-    let newResponses = {};
-    for (let key in this.responses) {
-      if (this.mapResponsesObject.hasOwnProperty(key))
-        newResponses[key] = typeof this.mapResponsesObject[key] === 'function' ?
-          this.responses[key].map(this.mapResponsesObject[key]) :
-          this.responses[key];
-    }
-    this.responses = newResponses;
-  }
-
   ///////////////////////////////////////////// ACTION PROCESSING ////
 
   exec() { // returns a promise
@@ -84,8 +45,6 @@ class Flow {
       // save resolve and reject actions for other methods
       this.resolve = () => {
         this.isComplete = true;
-        this.doFilterResponses();
-        this.doMapResponses();
         return resolve(this.responses);
       }
       this.reject = err => {
